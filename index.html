@@ -1,0 +1,715 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Idioms Interactive Assignment</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0; padding: 20px;
+    background: url('https://i.ibb.co/nNN4t7Pw/1754314642642.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.95);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.3);
+  }
+  h2 {
+    margin-top: 0;
+  }
+  .instructions {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .flex-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .column {
+    width: 48%;
+    min-width: 280px;
+  }
+  .item-list {
+    list-style: none;
+    padding: 0;
+    border: 1px solid #ccc;
+    min-height: 540px;
+    background: white;
+    border-radius: 6px;
+    overflow-y: auto;
+  }
+  .photo-item {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+    padding: 8px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    background: #f1f1f1;
+    flex-wrap: wrap; /* Allow wrapping on small screens */
+  }
+  .photo-item img {
+    width: 70px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 12px;
+    border-radius: 4px;
+    flex-shrink: 0; /* Prevent image from shrinking */
+  }
+  .photo-item span { /* Styles for the idiom text */
+    flex-grow: 1; /* Take available space */
+    min-width: 150px; /* Minimum width before wrapping */
+    word-wrap: break-word;
+    white-space: normal;
+    font-size: 16px;
+    line-height: 1.2em;
+    margin-bottom: 5px; /* Space before drop box if it wraps */
+  }
+  /* New class for the drop box container in Part 2 */
+  .definition-drop-container {
+    width: 100%; /* Full width of the photo-item */
+    display: flex;
+    justify-content: flex-end; /* Align to the right */
+  }
+  .drop-box {
+    width: 60%; /* Adjusted width */
+    min-height: 60px;
+    max-height: 120px; /* Set max height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 2px dashed #ccc;
+    border-radius: 6px;
+    padding: 5px 10px;
+    display: flex;
+    align-items: flex-start; /* Align content to the top */
+    justify-content: flex-start;
+    background: white;
+    word-wrap: break-word;
+    white-space: normal;
+    cursor: pointer;
+    /* Ensure text wraps nicely inside */
+    hyphens: auto;
+    text-align: left;
+    /* Add scrollbar visibility indicator */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #888 #f1f1f1; /* For Firefox */
+  }
+  /* Webkit browsers (Chrome, Safari) scrollbar styling */
+  .drop-box::-webkit-scrollbar {
+    width: 8px;
+  }
+  .drop-box::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+  }
+  .drop-box::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  .drop-box::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  .drop-box.dragging-over {
+    border-color: #007bff;
+    background: #e9f2ff;
+  }
+  .drop-box.unmovable {
+    border-color: #388e3c !important;
+    background-color: #e2f0de !important;
+    cursor: default;
+  }
+  .idiom-item {
+    padding: 6px 10px;
+    margin: 5px 10px;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    background: #e2ebff;
+    cursor: grab;
+    user-select: none;
+    white-space: normal;
+    word-break: break-word;
+    /* Apply height and scroll constraints to draggable items too */
+    max-height: 110px;
+    overflow-y: auto;
+    transition: background-color 0.3s, border-color 0.3s;
+    /* Ensure nice text wrapping */
+    hyphens: auto;
+    text-align: left;
+    /* Add scrollbar visibility indicator */
+    scrollbar-width: thin; /* For Firefox */
+    scrollbar-color: #6a9eff #e2ebff; /* For Firefox */
+  }
+  .idiom-item::-webkit-scrollbar {
+    width: 6px;
+  }
+  .idiom-item::-webkit-scrollbar-track {
+    background: #e2ebff;
+    border-radius: 3px;
+  }
+  .idiom-item::-webkit-scrollbar-thumb {
+    background-color: #6a9eff;
+    border-radius: 3px;
+  }
+  .idiom-item::-webkit-scrollbar-thumb:hover {
+    background-color: #3a7aff;
+  }
+  .idiom-item.dragging {
+    opacity: 0.6;
+  }
+  .idiom-item.correct,
+  .idiom-item.unmovable {
+    background-color: #a5d6a7;
+    border-color: #388e3c;
+    font-weight: bold;
+    cursor: default !important;
+  }
+  /* Define incorrect and neutral styles for visual feedback */
+  .idiom-item.incorrect {
+    background-color: #ffcdd2; /* Light red */
+    border-color: #d32f2f; /* Darker red */
+  }
+  .idiom-item.neutral {
+    background-color: #e2ebff; /* Default light blue */
+    border-color: #aaa; /* Default gray border */
+  }
+  /* New class for the 'blue/neutral' state on retry */
+  .idiom-item.retry-neutral {
+    background-color: #bbdefb; /* Light blue, distinct from default */
+    border-color: #64b5f6; /* Blue border */
+  }
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 5px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  button:disabled {
+    background-color: #a1c4fd;
+    cursor: not-allowed;
+  }
+  .hidden {
+    display: none;
+  }
+  /* Part 3 Styles */
+  #part3 {
+    text-align: center;
+  }
+  .flashcard-container {
+    perspective: 1000px;
+    height: 300px;
+    margin: 30px auto;
+    width: 90%;
+    max-width: 500px;
+  }
+  .flashcard {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+    cursor: pointer;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  }
+  .flashcard.flipped {
+    transform: rotateY(180deg);
+  }
+  .flashcard-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    text-align: center;
+  }
+  .flashcard-front {
+    color: white;
+    /* Background image will be set dynamically */
+    background-size: cover;
+    background-position: center;
+    /* Add dark overlay for better text readability */
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  .flashcard-back {
+    background: url('https://i.postimg.cc/hvjJCx0P/1754314642642.jpg') center/cover;
+    color: white;
+    /* Add dark overlay for better text readability */
+    background-blend-mode: overlay;
+    background-color: rgba(0, 0, 0, 0.4);
+    transform: rotateY(180deg);
+  }
+  .flashcard-content {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 10px 0;
+    hyphens: auto;
+    word-wrap: break-word;
+    max-height: 100%;
+    overflow-y: auto;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    /* Add scrollbar visibility indicator */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.5) rgba(0, 0, 0, 0.1);
+  }
+  .flashcard-content::-webkit-scrollbar {
+    width: 6px;
+  }
+  .flashcard-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+  }
+  .flashcard-content::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+  }
+  .flashcard-content::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(255, 255, 255, 0.7);
+  }
+  .flashcard-instruction {
+    position: absolute;
+    bottom: 15px;
+    font-size: 14px;
+    opacity: 0.8;
+  }
+  .navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  .nav-btn {
+    background-color: #28a745;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  .counter {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .part3-instructions {
+    font-size: 16px;
+    margin-bottom: 15px;
+    font-style: italic;
+  }
+  #restartBtn {
+    background-color: #6c757d; /* Bootstrap secondary color */
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <section id="part1">
+    <h2>Part 1</h2>
+    <div class="instructions">Drag and drop the idioms into the boxes next to the photos to match them.</div>
+    <div class="flex-row">
+      <ul class="item-list column" id="photosList" aria-label="Photos with drop boxes"></ul>
+      <ul class="item-list column" id="idiomsList" aria-label="Pool of idioms"></ul>
+    </div>
+    <button id="checkPart1Btn" disabled>Check Answers</button>
+    <div id="part1Result" role="alert" style="margin-top:20px; font-weight:bold;"></div>
+  </section>
+  <button id="toPart2Btn" class="hidden">Next: Match Idioms to Their Definitions</button>
+  <section id="part2" class="hidden">
+    <h2>Part 2</h2>
+    <div class="instructions">Drag and drop the definitions into the boxes next to the idioms (with photos) to match their meanings.</div>
+    <div class="flex-row">
+      <ul class="item-list column" id="idiomsWithPhotosList" aria-label="Idioms with photos and drop boxes"></ul>
+      <ul class="item-list column" id="definitionsList" aria-label="Pool of definitions"></ul>
+    </div>
+    <button id="checkPart2Btn" disabled>Check Answers</button>
+    <div id="part2Result" role="alert" style="margin-top:20px; font-weight:bold;"></div>
+  </section>
+  <button id="toPart3Btn" class="hidden">Proceed to Flashcards: Review Idioms & Definitions</button>
+  <section id="part3" class="hidden">
+    <h2>Part 3: Interactive Flashcards</h2>
+    <div class="part3-instructions">Click on a card to flip it and see the definition. Use the buttons below to navigate.</div>
+    <div class="flashcard-container">
+      <div class="flashcard" id="flashcard">
+        <div class="flashcard-face flashcard-front" id="flashcard-front">
+          <div class="flashcard-content" id="card-idiom"></div>
+          <div class="flashcard-instruction">Click to see definition</div>
+        </div>
+        <div class="flashcard-face flashcard-back">
+          <div class="flashcard-content" id="card-definition"></div>
+          <div class="flashcard-instruction">Click to see idiom</div>
+        </div>
+      </div>
+    </div>
+    <div class="counter" id="card-counter">Card 1 of 10</div>
+    <div class="navigation-buttons">
+      <button class="nav-btn" id="prev-btn">Previous</button>
+      <button class="nav-btn" id="next-btn">Next</button>
+    </div>
+    <button id="restartBtn">Restart from Beginning (Part 1)</button>
+  </section>
+</div>
+<script>
+// Data
+const idiomsData = [
+  { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "https://i.postimg.cc/sf0PDK6w/Screenshot-20250804-001701-Chrome.jpg" },
+  { id: "hitground", idiom: "hit the ground running", definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start", photo: "https://i.postimg.cc/KzjK6h2F/Screenshot-20250804-001649-Chrome.jpg" },
+  { id: "stillwaters", idiom: "still waters run deep", definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface", photo: "https://i.postimg.cc/66GVqnkK/molodaa-krasivaa-zensina-poziruet-zavernutyi-v-seruu-tkan.jpg" },
+  { id: "holdkey", idiom: "hold the key", definition: "to have the power or means to achieve something", photo: "https://i.postimg.cc/ZnkdpsGS/zensina-derzit-kluc-ot-skeleta.jpg" },
+  { id: "painttown", idiom: "paint the town red", definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties", photo: "https://i.postimg.cc/7LdGrQY2/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg" },
+  { id: "catchoffguard", idiom: "catch someone off guard", definition: "to surprise someone by doing something unexpected", photo: "https://i.postimg.cc/htht4bYb/udivlennaa-zensina-s-ananasom-na-golove.jpg" },
+  { id: "headintheclouds", idiom: "have one's head in the clouds", definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality", photo: "https://i.postimg.cc/LsRQBNMj/zensina-s-vidom-speredi-v-forme-oblaka.jpg" },
+  { id: "bestfoot", idiom: "put one's best foot forward", definition: "to act in the best possible way to make a good impression", photo: "https://i.postimg.cc/4djStZ4x/IMG-20250804-144644-096.jpg" },
+  { id: "sorethumb", idiom: "stick out like a sore thumb", definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way", photo: "https://i.postimg.cc/RV5YZMbP/zensina-v-plastikovyh-lozkah-i-vilkah.jpg" },
+  { id: "burstbubble", idiom: "burst someone's bubble", definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs", photo: "https://i.postimg.cc/FRkPhqb5/portret-zensiny-s-asnym-puzyrem.jpg" }
+];
+// Utility shuffle
+function shuffleArray(arr) {
+  return arr.map(v => ({v, s: Math.random()})).sort((a,b) => a.s - b.s).map(o => o.v);
+}
+let draggedItem = null;
+let draggedDef = null;
+const photosList = document.getElementById('photosList');
+const idiomsList = document.getElementById('idiomsList');
+const check1Btn = document.getElementById('checkPart1Btn');
+const part1Result = document.getElementById('part1Result');
+const toPart2Btn = document.getElementById('toPart2Btn');
+const idiomsWithPhotosList = document.getElementById('idiomsWithPhotosList');
+const definitionsList = document.getElementById('definitionsList');
+const check2Btn = document.getElementById('checkPart2Btn');
+const part2Result = document.getElementById('part2Result');
+const toPart3Btn = document.getElementById('toPart3Btn');
+const restartBtn = document.getElementById('restartBtn');
+
+// Flag to track if Part 2 check has been attempted
+let part2CheckAttempted = false;
+
+function canDrag(elem) {
+  return !elem.classList.contains('unmovable');
+}
+// Part 1
+function createPhotoWithDropBox(item){
+  const li=document.createElement('li');
+  li.className='photo-item';
+  li.dataset.id=item.id;
+  let img=document.createElement('img');
+  img.src=item.photo;
+  img.alt=`Photo illustrating idiom: ${item.idiom}`;
+  li.appendChild(img);
+  let dropBox=document.createElement('div');
+  dropBox.className='drop-box';
+  dropBox.dataset.accepts=item.id;
+  dropBox.addEventListener('dragover', e => {
+    e.preventDefault();
+    if(!dropBox.classList.contains('unmovable')) dropBox.classList.add('dragging-over');
+  });
+  dropBox.addEventListener('dragleave', e => dropBox.classList.remove('dragging-over'));
+  dropBox.addEventListener('drop', e => {
+    e.preventDefault();
+    dropBox.classList.remove('dragging-over');
+    if(draggedItem && canDrag(draggedItem) && !dropBox.classList.contains('unmovable')){
+      if(dropBox.firstChild && !dropBox.firstChild.classList.contains('unmovable')) {
+        idiomsList.appendChild(dropBox.firstChild);
+        dropBox.classList.remove('unmovable');
+      }
+      dropBox.appendChild(draggedItem);
+      draggedItem=null;
+      updateCheckPart1Button();
+      resetIncorrectStyles(photosList, 'idiom-item'); // Reset on change
+      part1Result.textContent='';
+    }
+  });
+  li.appendChild(dropBox);
+  return li;
+}
+function createDraggableItem(text,id){
+  const li=document.createElement('li');
+  li.className='idiom-item neutral';
+  li.textContent=text;
+  li.dataset.id=id;
+  li.setAttribute('draggable',true);
+  li.addEventListener('dragstart', e => {
+    if(!canDrag(li)) { e.preventDefault(); return false; }
+    draggedItem=li;
+    setTimeout(() => li.classList.add('dragging'),0);
+  });
+  li.addEventListener('dragend', () => {
+    draggedItem=null;
+    li.classList.remove('dragging');
+  });
+  return li;
+}
+function initPart1(){
+  photosList.innerHTML='';
+  idiomsList.innerHTML='';
+  shuffleArray(idiomsData).forEach(item => photosList.appendChild(createPhotoWithDropBox(item)));
+  shuffleArray(idiomsData).forEach(item => idiomsList.appendChild(createDraggableItem(item.idiom,item.id)));
+  part1Result.textContent='';
+  toPart2Btn.classList.add('hidden');
+  check1Btn.disabled=true;
+}
+function updateCheckPart1Button() {
+  const dropBoxes = photosList.querySelectorAll('.drop-box');
+  const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
+  check1Btn.disabled = !allFilled;
+}
+check1Btn.addEventListener('click', () => {
+  let correctCount=0;
+  const dropBoxes = photosList.querySelectorAll('.drop-box');
+  dropBoxes.forEach(box => {
+    if(box.firstChild){
+      if(box.firstChild.dataset.id === box.dataset.accepts){
+        box.firstChild.classList.add('correct','unmovable');
+        box.firstChild.classList.remove('incorrect','neutral', 'retry-neutral'); // Ensure clean state
+        box.classList.add('unmovable');
+        correctCount++;
+      } else {
+        // Use retry-neutral class if it's not the first attempt
+         if (part2CheckAttempted) {
+             box.firstChild.classList.add('retry-neutral');
+             box.firstChild.classList.remove('incorrect', 'neutral'); // Remove other states
+         } else {
+             box.firstChild.classList.add('incorrect');
+             box.firstChild.classList.remove('retry-neutral', 'neutral'); // Remove other states
+         }
+        box.firstChild.classList.remove('correct','unmovable'); // Ensure incorrect items are not marked correct/unmovable
+        box.classList.remove('unmovable'); // Box should not be unmovable if incorrect
+      }
+    }
+  });
+  if(correctCount === idiomsData.length){
+    part1Result.textContent = `You matched all ${idiomsData.length} correctly!`;
+    check1Btn.disabled = true;
+    toPart2Btn.classList.remove('hidden');
+  } else {
+    part1Result.textContent = 'Please try again!';
+    // Do not reset styles here anymore, they are managed in the check logic
+  }
+});
+toPart2Btn.addEventListener('click', () => {
+  document.getElementById('part1').classList.add('hidden');
+  toPart2Btn.classList.add('hidden');
+  document.getElementById('part2').classList.remove('hidden');
+  initPart2();
+});
+// Part 2
+function createIdiomWithPhoto(item){
+  const li=document.createElement('li');
+  li.className='photo-item';
+  li.dataset.id=item.id;
+  const img=document.createElement('img');
+  img.src=item.photo;
+  img.alt=`Photo for idiom: ${item.idiom}`;
+  li.appendChild(img);
+  
+  const span=document.createElement('span');
+  span.textContent=item.idiom;
+  // span styles are now in CSS
+  li.appendChild(span);
+  
+  // Create a wrapper for the drop box to manage layout
+  const dropContainer = document.createElement('div');
+  dropContainer.className = 'definition-drop-container';
+  
+  const dropBox=document.createElement('div');
+  dropBox.className='drop-box';
+  // dropBox.style.marginLeft='12px'; // Removed inline style, using CSS flexbox
+  dropBox.dataset.accepts=item.id;
+  dropBox.addEventListener('dragover',e => {
+    e.preventDefault();
+    if(!dropBox.classList.contains('unmovable'))
+      dropBox.classList.add('dragging-over');
+  });
+  dropBox.addEventListener('dragleave',e => dropBox.classList.remove('dragging-over'));
+  dropBox.addEventListener('drop',e => {
+    e.preventDefault();
+    dropBox.classList.remove('dragging-over');
+    if(draggedDef && !dropBox.classList.contains('unmovable')){
+      if(dropBox.firstChild){
+        if(!dropBox.firstChild.classList.contains('unmovable')){
+          definitionsList.appendChild(dropBox.firstChild);
+          // Do not remove 'unmovable' class from dropBox here if the child was correct
+          // Only remove if the child was being replaced and was not correct
+          // The check logic will handle the unmovable state of the box
+          // Simple approach: always allow replacement unless the box itself is unmovable
+          // (which is checked at the start of this block)
+        }
+      }
+      dropBox.appendChild(draggedDef);
+      draggedDef=null;
+      updateCheckPart2Button();
+      resetIncorrectStyles(idiomsWithPhotosList, 'idiom-item'); // Reset on change
+      part2Result.textContent='';
+    }
+  });
+  
+  dropContainer.appendChild(dropBox);
+  li.appendChild(dropContainer);
+  return li;
+}
+function createDefinition(item){
+  const li=document.createElement('li');
+  li.className='idiom-item neutral';
+  li.textContent=item.definition;
+  li.dataset.id=item.id;
+  li.setAttribute('draggable',true);
+  li.addEventListener('dragstart',()=>{
+    if(li.classList.contains('unmovable')) return false; // Prevent drag if unmovable
+    draggedDef=li;
+    setTimeout(()=>li.classList.add('dragging'),0);
+  });
+  li.addEventListener('dragend',()=>{
+    draggedDef=null;
+    li.classList.remove('dragging');
+  });
+  return li;
+}
+function initPart2(){
+  idiomsWithPhotosList.innerHTML='';
+  definitionsList.innerHTML='';
+  idiomsData.forEach(item=>idiomsWithPhotosList.appendChild(createIdiomWithPhoto(item)));
+  shuffleArray(idiomsData).forEach(item=>definitionsList.appendChild(createDefinition(item)));
+  check2Btn.disabled=true;
+  part2Result.textContent='';
+  part2CheckAttempted = false; // Reset flag when Part 2 is initialized
+}
+function updateCheckPart2Button(){
+  const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
+  const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
+  check2Btn.disabled = !allFilled;
+}
+
+check2Btn.addEventListener('click',()=>{
+  part2CheckAttempted = true; // Mark that a check has been attempted
+  let correctCount = 0;
+  const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
+  dropBoxes.forEach(box=>{
+    if(box.firstChild){
+      if(box.firstChild.dataset.id === box.dataset.accepts){
+        box.firstChild.classList.add('correct','unmovable');
+        box.firstChild.classList.remove('incorrect','neutral', 'retry-neutral');
+        box.classList.add('unmovable');
+        correctCount++;
+      } else {
+        // Apply 'retry-neutral' class on subsequent attempts
+        if (part2CheckAttempted) {
+             box.firstChild.classList.add('retry-neutral');
+             box.firstChild.classList.remove('incorrect', 'neutral'); // Remove other states
+         } else {
+             box.firstChild.classList.add('incorrect');
+             box.firstChild.classList.remove('retry-neutral', 'neutral'); // Remove other states
+         }
+        box.firstChild.classList.remove('correct','unmovable');
+        box.classList.remove('unmovable'); // Box should not be unmovable if incorrect
+      }
+    }
+  });
+  if(correctCount === idiomsData.length){
+    part2Result.textContent = `You matched all ${idiomsData.length} correctly!`;
+    check2Btn.disabled = true;
+    toPart3Btn.classList.remove('hidden'); // Show Part 3 button
+  } else {
+    part2Result.textContent = 'Please try again!';
+    // Do not reset styles here, managed in check logic
+  }
+});
+
+toPart3Btn.addEventListener('click', () => {
+  document.getElementById('part2').classList.add('hidden');
+  toPart3Btn.classList.add('hidden');
+  document.getElementById('part3').classList.remove('hidden');
+  initPart3();
+});
+
+restartBtn.addEventListener('click', () => {
+  document.getElementById('part3').classList.add('hidden');
+  document.getElementById('part1').classList.remove('hidden');
+  initPart1(); // Re-initialize Part 1
+});
+
+// Part 3: Flashcards
+let currentCardIndex = 0;
+const flashcard = document.getElementById('flashcard');
+const flashcardFront = document.getElementById('flashcard-front');
+const cardIdiom = document.getElementById('card-idiom');
+const cardDefinition = document.getElementById('card-definition');
+const cardCounter = document.getElementById('card-counter');
+const prevBtn = document.getElementById('prev-btn');
+const nextBtn = document.getElementById('next-btn');
+
+function updateCard() {
+  const item = idiomsData[currentCardIndex];
+  cardIdiom.textContent = item.idiom;
+  cardDefinition.textContent = item.definition;
+  cardCounter.textContent = `Card ${currentCardIndex + 1} of ${idiomsData.length}`;
+  
+  // Set the background image for the front of the flashcard
+  flashcardFront.style.backgroundImage = `url('${item.photo}')`;
+  
+  // Reset flip state
+  flashcard.classList.remove('flipped');
+}
+
+function initPart3() {
+  currentCardIndex = 0;
+  updateCard();
+  
+  flashcard.addEventListener('click', () => {
+    flashcard.classList.toggle('flipped');
+  });
+  
+  prevBtn.addEventListener('click', () => {
+    currentCardIndex = (currentCardIndex - 1 + idiomsData.length) % idiomsData.length;
+    updateCard();
+  });
+  
+  nextBtn.addEventListener('click', () => {
+    currentCardIndex = (currentCardIndex + 1) % idiomsData.length;
+    updateCard();
+  });
+}
+
+
+// Generic function to reset incorrect styles
+// Takes the container and the class name of items to reset
+function resetIncorrectStyles(container, itemClass) {
+    // This function is less critical now as styles are managed in the check logic
+    // but can be used if needed for other interactions.
+    // For example, if an item is moved, we might want to remove its 'incorrect' state.
+    const incorrects = container.querySelectorAll(`.${itemClass}.incorrect`);
+    incorrects.forEach(el => {
+        el.classList.remove('incorrect');
+        el.classList.add('neutral');
+    });
+    // Also reset retry-neutral if needed on change, but logic handles it on check
+    // const retryNeutrals = container.querySelectorAll(`.${itemClass}.retry-neutral`);
+    // retryNeutrals.forEach(el => {
+    //     el.classList.remove('retry-neutral');
+    //     el.classList.add('neutral');
+    // });
+}
+// Initialize first part on load
+initPart1();
+</script>
+</body>
+</html>
+```
