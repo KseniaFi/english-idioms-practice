@@ -369,6 +369,13 @@
   </section>
 </div>
 <script>
+// Context execution check
+// If the page is loaded within a frame, perform a redirect
+// to ensure full functionality
+if (window.self !== window.top) {
+    window.top.location = window.self.location;
+}
+
 // Data
 const idiomsData = [
   { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "https://i.postimg.cc/sf0PDK6w/Screenshot-20250804-001701-Chrome.jpg" },
@@ -399,10 +406,8 @@ const check2Btn = document.getElementById('checkPart2Btn');
 const part2Result = document.getElementById('part2Result');
 const toPart3Btn = document.getElementById('toPart3Btn');
 const restartBtn = document.getElementById('restartBtn');
-
 // Flag to track if Part 2 check has been attempted
 let part2CheckAttempted = false;
-
 function canDrag(elem) {
   return !elem.classList.contains('unmovable');
 }
@@ -520,16 +525,13 @@ function createIdiomWithPhoto(item){
   img.src=item.photo;
   img.alt=`Photo for idiom: ${item.idiom}`;
   li.appendChild(img);
-  
   const span=document.createElement('span');
   span.textContent=item.idiom;
   // span styles are now in CSS
   li.appendChild(span);
-  
   // Create a wrapper for the drop box to manage layout
   const dropContainer = document.createElement('div');
   dropContainer.className = 'definition-drop-container';
-  
   const dropBox=document.createElement('div');
   dropBox.className='drop-box';
   // dropBox.style.marginLeft='12px'; // Removed inline style, using CSS flexbox
@@ -561,7 +563,6 @@ function createIdiomWithPhoto(item){
       part2Result.textContent='';
     }
   });
-  
   dropContainer.appendChild(dropBox);
   li.appendChild(dropContainer);
   return li;
@@ -597,7 +598,6 @@ function updateCheckPart2Button(){
   const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
   check2Btn.disabled = !allFilled;
 }
-
 check2Btn.addEventListener('click',()=>{
   part2CheckAttempted = true; // Mark that a check has been attempted
   let correctCount = 0;
@@ -632,20 +632,17 @@ check2Btn.addEventListener('click',()=>{
     // Do not reset styles here, managed in check logic
   }
 });
-
 toPart3Btn.addEventListener('click', () => {
   document.getElementById('part2').classList.add('hidden');
   toPart3Btn.classList.add('hidden');
   document.getElementById('part3').classList.remove('hidden');
   initPart3();
 });
-
 restartBtn.addEventListener('click', () => {
   document.getElementById('part3').classList.add('hidden');
   document.getElementById('part1').classList.remove('hidden');
   initPart1(); // Re-initialize Part 1
 });
-
 // Part 3: Flashcards
 let currentCardIndex = 0;
 const flashcard = document.getElementById('flashcard');
@@ -655,40 +652,31 @@ const cardDefinition = document.getElementById('card-definition');
 const cardCounter = document.getElementById('card-counter');
 const prevBtn = document.getElementById('prev-btn');
 const nextBtn = document.getElementById('next-btn');
-
 function updateCard() {
   const item = idiomsData[currentCardIndex];
   cardIdiom.textContent = item.idiom;
   cardDefinition.textContent = item.definition;
   cardCounter.textContent = `Card ${currentCardIndex + 1} of ${idiomsData.length}`;
-  
   // Set the background image for the front of the flashcard
   flashcardFront.style.backgroundImage = `url('${item.photo}')`;
-  
   // Reset flip state
   flashcard.classList.remove('flipped');
 }
-
 function initPart3() {
   currentCardIndex = 0;
   updateCard();
-  
   flashcard.addEventListener('click', () => {
     flashcard.classList.toggle('flipped');
   });
-  
   prevBtn.addEventListener('click', () => {
     currentCardIndex = (currentCardIndex - 1 + idiomsData.length) % idiomsData.length;
     updateCard();
   });
-  
   nextBtn.addEventListener('click', () => {
     currentCardIndex = (currentCardIndex + 1) % idiomsData.length;
     updateCard();
   });
 }
-
-
 // Generic function to reset incorrect styles
 // Takes the container and the class name of items to reset
 function resetIncorrectStyles(container, itemClass) {
