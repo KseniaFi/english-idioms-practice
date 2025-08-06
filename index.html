@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -500,8 +499,10 @@
 <body>
 <div class="container">
   <section id="part1">
-    <h2>Part 1: Match Idioms to Photos</h2>
-    <div class="instructions">Tap an idiom from the right pool, then tap the target box next to a photo on the left to match them.</div>
+    <h2>Part 1: Match Each Idiom to Its Photo</h2>
+    <div class="instructions">
+      Choose an idiom from the available options, then click the empty box next to the corresponding photo to place it.
+    </div>
     <div class="flex-row">
       <ul class="item-list column" id="photosList" aria-label="Photos with drop boxes"></ul>
       <ul class="item-list column" id="idiomsList" aria-label="Pool of idioms"></ul>
@@ -511,8 +512,10 @@
   </section>
   <button id="toPart2Btn" class="hidden">Next: Match Idioms to Definitions</button>
   <section id="part2" class="hidden">
-    <h2>Part 2: Match Idioms to Definitions</h2>
-    <div class="instructions">Tap a definition from the right pool, then tap the target box next to an idiom (with photo) on the left to match them.</div>
+    <h2>Part 2: Match Each Idiom to Its Definition</h2>
+    <div class="instructions">
+      Choose a definition from the options provided, then click the empty box next to the matching idiom to place it.
+    </div>
     <div class="flex-row">
       <ul class="item-list column" id="idiomsWithPhotosList" aria-label="Idioms with photos and drop boxes"></ul>
       <ul class="item-list column" id="definitionsList" aria-label="Pool of definitions"></ul>
@@ -605,11 +608,10 @@ function shuffleArray(arr) {
 }
 
 function canDrag(elem) {
-  // В новой логике это проверяет, можно ли "взаимодействовать" с элементом
   return elem && !elem.classList.contains('unmovable');
 }
 
-// === Улучшенные уведомления ===
+// === Уведомления ===
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -628,7 +630,7 @@ function showNotification(message, type = 'info') {
     }, 4000);
 }
 
-// === Улучшенные индикаторы выбора ===
+// === Индикаторы выбора ===
 function addSelectionIndicator(element) {
     if (element && !element.querySelector('.selection-indicator')) {
         const indicator = document.createElement('div');
@@ -661,9 +663,7 @@ function createPhotoWithDropBox(item){
   dropBox.className = 'drop-box';
   dropBox.dataset.accepts = item.id;
 
-  // Обработчики кликов/тапов для зоны сброса
   dropBox.addEventListener('click', () => handleDropBoxClick(dropBox, 'idiom'));
-  // Предотвращаем двойной тап для зума на мобильных
   dropBox.addEventListener('touchend', e => {
       e.preventDefault();
       handleDropBoxClick(dropBox, 'idiom');
@@ -678,34 +678,27 @@ function createDraggableItem(text, id){
   li.className = 'idiom-item neutral';
   li.textContent = text;
   li.dataset.id = id;
-  // Убираем draggable="true", так как DnD больше не используется
-  // li.setAttribute('draggable', true);
 
-  // Обработчики кликов/тапов для элемента
   li.addEventListener('click', () => handleItemClick(li, 'idiom'));
   li.addEventListener('touchend', e => {
-      e.preventDefault(); // Предотвращаем двойной тап для зума
+      e.preventDefault();
       handleItemClick(li, 'idiom');
   });
 
   return li;
 }
 
-// Универсальная функция обработки клика/касания на элементе
 function handleItemClick(item, type) {
-    // Проверяем, можно ли взаимодействовать с элементом
     if (!canDrag(item)) {
         showNotification('This item is already correctly placed.', 'error');
         return;
     }
 
-    // Снимаем выделение с предыдущего элемента
     if (type === 'idiom' && selectedItem) selectedItem.classList.remove('selected');
     if (type === 'definition' && selectedDef) selectedDef.classList.remove('selected');
 
     removeSelectionIndicators();
 
-    // Выделяем новый элемент
     if (type === 'idiom') {
         selectedItem = item;
         selectedItem.classList.add('selected');
@@ -719,7 +712,6 @@ function handleItemClick(item, type) {
     }
 }
 
-// Универсальная функция обработки клика/касания на зоне сброса
 function handleDropBoxClick(dropBox, type) {
     let selectedItemVar = type === 'idiom' ? selectedItem : selectedDef;
 
@@ -733,29 +725,23 @@ function handleDropBoxClick(dropBox, type) {
         return;
     }
 
-    // Возвращаем предыдущий элемент, если он был (и он не закреплён)
     if (dropBox.firstChild && !dropBox.firstChild.classList.contains('unmovable')) {
         if (type === 'idiom') {
             idiomsList.appendChild(dropBox.firstChild);
         } else if (type === 'definition') {
             definitionsList.appendChild(dropBox.firstChild);
         }
-        // dropBox.classList.remove('unmovable'); // Не нужно, так как мы его перезаписываем
     }
 
-    // Перемещаем выбранный элемент
     dropBox.appendChild(selectedItemVar);
     selectedItemVar.classList.remove('selected');
     removeSelectionIndicators();
 
-    // Сбрасываем глобальную переменную
     if (type === 'idiom') selectedItem = null;
     else if (type === 'definition') selectedDef = null;
 
-    // Обновляем UI
     if (type === 'idiom') {
         updateCheckPart1Button();
-        // Сброс стилей не нужен при каждом перемещении, только при проверке
         part1Result.textContent = '';
     } else if (type === 'definition') {
         updateCheckPart2Button();
@@ -789,21 +775,15 @@ check1Btn.addEventListener('click', () => {
   let correctCount = 0;
   const dropBoxes = photosList.querySelectorAll('.drop-box');
   dropBoxes.forEach(box => {
-    // Усиленная проверка на существование firstChild
     const boxChild = box.firstChild;
-    if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){ // Проверяем, что это элемент, а не текст
-      console.log("Checking box for item ID:", boxChild.dataset.id, " against correct ID:", box.dataset.accepts);
+    if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){
       if(boxChild.dataset.id === box.dataset.accepts){
         boxChild.classList.add('correct','unmovable');
         boxChild.classList.remove('incorrect','neutral', 'retry-neutral');
         box.classList.add('unmovable');
         correctCount++;
-        console.log("Correct match found.");
       } else {
-        // --- ЛОГИКА ВОЗВРАТА: Автоматически возвращаем неправильный элемент ---
-        console.log("Incorrect match. Returning item to pool.");
         boxChild.classList.remove('correct','unmovable');
-        // Используем retry-neutral при повторной попытке, иначе incorrect
         if (part2CheckAttempted) {
             boxChild.classList.add('retry-neutral');
             boxChild.classList.remove('incorrect', 'neutral');
@@ -812,18 +792,12 @@ check1Btn.addEventListener('click', () => {
             boxChild.classList.remove('retry-neutral', 'neutral');
         }
         box.classList.remove('unmovable');
-        // Возвращаем элемент в пул
         idiomsList.appendChild(boxChild);
-        // Сброс стилей возвращенного элемента на нейтральный
         boxChild.classList.remove('incorrect', 'retry-neutral', 'correct', 'unmovable');
         boxChild.classList.add('neutral');
-        console.log("Item returned and styles reset.");
       }
-    } else {
-        console.log("Box is empty or contains non-element node.");
     }
   });
-  // После возврата обновляем состояние кнопки
   updateCheckPart1Button();
 
   if(correctCount === idiomsData.length){
@@ -836,7 +810,6 @@ check1Btn.addEventListener('click', () => {
     part1Result.textContent = `🤔 You got ${correctCount}/${idiomsData.length} correct. Incorrect answers have been returned.`;
     part1Result.style.color = '#e74c3c';
     showNotification('Some answers were incorrect and returned. Try again!', 'error');
-    // Кнопка проверки может снова активироваться, если пользователь переместит элементы
   }
 });
 
@@ -869,7 +842,6 @@ function createIdiomWithPhoto(item){
   dropBox.className = 'drop-box';
   dropBox.dataset.accepts = item.id;
 
-  // Обработчики кликов/тапов для зоны сброса
   dropBox.addEventListener('click', () => handleDropBoxClick(dropBox, 'definition'));
   dropBox.addEventListener('touchend', e => {
       e.preventDefault();
@@ -883,12 +855,10 @@ function createIdiomWithPhoto(item){
 
 function createDefinition(item){
   const li = document.createElement('li');
-  li.className = 'idiom-item neutral'; // Применяются новые стили
+  li.className = 'idiom-item neutral';
   li.textContent = item.definition;
   li.dataset.id = item.id;
-  // li.setAttribute('draggable', true); // Убрано
 
-  // Обработчики кликов/тапов для элемента
   li.addEventListener('click', () => handleItemClick(li, 'definition'));
   li.addEventListener('touchend', e => {
       e.preventDefault();
@@ -909,7 +879,6 @@ function initPart2(){
 
   check2Btn.disabled = true;
   part2Result.textContent = '';
-  // part2CheckAttempted = false; // Не сбрасываем здесь
 }
 
 function updateCheckPart2Button(){
@@ -919,25 +888,19 @@ function updateCheckPart2Button(){
 }
 
 check2Btn.addEventListener('click', () => {
-  part2CheckAttempted = true; // Устанавливаем флаг при каждой попытке
+  part2CheckAttempted = true;
   let correctCount = 0;
   const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
   dropBoxes.forEach(box => {
-    // Усиленная проверка на существование firstChild
     const boxChild = box.firstChild;
-    if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){ // Проверяем, что это элемент
-      console.log("Checking box for definition ID:", boxChild.dataset.id, " against correct ID:", box.dataset.accepts);
+    if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){
       if(boxChild.dataset.id === box.dataset.accepts){
         boxChild.classList.add('correct','unmovable');
         boxChild.classList.remove('incorrect','neutral', 'retry-neutral');
         box.classList.add('unmovable');
         correctCount++;
-        console.log("Correct match found.");
       } else {
-        // --- ЛОГИКА ВОЗВРАТА: Автоматически возвращаем неправильный элемент ---
-        console.log("Incorrect match. Returning definition to pool.");
         boxChild.classList.remove('correct','unmovable');
-        // Используем retry-neutral при повторной попытке, иначе incorrect
         if (part2CheckAttempted) {
             boxChild.classList.add('retry-neutral');
             boxChild.classList.remove('incorrect', 'neutral');
@@ -946,18 +909,12 @@ check2Btn.addEventListener('click', () => {
             boxChild.classList.remove('retry-neutral', 'neutral');
         }
         box.classList.remove('unmovable');
-        // Возвращаем элемент в пул
         definitionsList.appendChild(boxChild);
-        // Сброс стилей возвращенного элемента на нейтральный
         boxChild.classList.remove('incorrect', 'retry-neutral', 'correct', 'unmovable');
         boxChild.classList.add('neutral');
-        console.log("Definition returned and styles reset.");
       }
-    } else {
-        console.log("Box is empty or contains non-element node.");
     }
   });
-  // После возврата обновляем состояние кнопки
   updateCheckPart2Button();
 
   if(correctCount === idiomsData.length){
@@ -983,7 +940,7 @@ toPart3Btn.addEventListener('click', () => {
 restartBtn.addEventListener('click', () => {
   document.getElementById('part3').classList.add('hidden');
   document.getElementById('part1').classList.remove('hidden');
-  part2CheckAttempted = false; // Сбрасываем только при полном перезапуске
+  part2CheckAttempted = false;
   initPart1();
 });
 
@@ -1003,7 +960,6 @@ function initPart3() {
   currentCardIndex = 0;
   updateCard();
 
-  // Обновляем обработчики событий для flashcard
   const flashcard = document.getElementById('flashcard');
   const newFlashcard = flashcard.cloneNode(true);
   flashcard.parentNode.replaceChild(newFlashcard, flashcard);
@@ -1013,7 +969,6 @@ function initPart3() {
       newFlashcard.classList.toggle('flipped');
   });
 
-  // Обновляем обработчики событий для кнопок
   const prevBtn = document.getElementById('prev-btn');
   const nextBtn = document.getElementById('next-btn');
   const newPrevBtn = prevBtn.cloneNode(true);
@@ -1047,9 +1002,7 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log('App initialized. Drag & Drop is disabled. Using Click/Touch mode only.');
     initPart1();
 });
-
 })();
 </script>
 </body>
 </html>
-```
