@@ -559,17 +559,68 @@
 
   const useClickModeOnly = true;
 
+  // Обновлённые данные с правильным соответствием фото, идиом и определений
   const idiomsData = [
-    { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "img/Screenshot_20250804_001701_Chrome.jpg" },
-    { id: "hitground", idiom: "hit the ground running", definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start", photo: "img/Screenshot_20250804_001649_Chrome.jpg" },
-    { id: "stillwaters", idiom: "still waters run deep", definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface", photo: "img/IMG_20250808_120048_354.jpg" },
-    { id: "holdkey", idiom: "hold the key", definition: "to have the power or means to achieve something", photo: "img/zensina-derzit-kluc-ot-skeleta.jpg" },
-    { id: "painttown", idiom: "paint the town red", definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties", photo: "img/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg" },
-    { id: "catchoffguard", idiom: "catch someone off guard", definition: "to surprise someone by doing something unexpected", photo: "img/IMG_20250808_120046_262.jpg" },
-    { id: "headintheclouds", idiom: "have one's head in the clouds", definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality", photo: "img/IMG_20250808_120043_423.jpg" },
-    { id: "bestfoot", idiom: "put one's best foot forward", definition: "to act in the best possible way to make a good impression", photo: "img/IMG_20250804_144644_096.jpg" },
-    { id: "sorethumb", idiom: "stick out like a sore thumb", definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way", photo: "img/zensina-v-plastikovyh-lozkah-i-vilkah.jpg" },
-    { id: "burstbubble", idiom: "burst someone's bubble", definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs", photo: "img/portret-zensiny-s-asnym-puzyrem.jpg" }
+    {
+      id: "blessing",
+      idiom: "a blessing in disguise",
+      definition: "something that seems bad at first but turns out to be good",
+      photo: "img/Screenshot_20250804_001701_Chrome.jpg"
+    },
+    {
+      id: "hitground",
+      idiom: "hit the ground running",
+      definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start",
+      photo: "img/Screenshot_20250804_001649_Chrome.jpg"
+    },
+    {
+      id: "stillwaters",
+      idiom: "still waters run deep",
+      definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface",
+      photo: "img/IMG_20250808_120048_354.jpg"
+    },
+    {
+      id: "holdkey",
+      idiom: "hold the key",
+      definition: "to have the power or means to achieve something",
+      photo: "img/zensina-derzit-kluc-ot-skeleta.jpg"
+    },
+    {
+      id: "painttown",
+      idiom: "paint the town red",
+      definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties",
+      photo: "img/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg"
+    },
+    {
+      id: "catchoffguard",
+      idiom: "catch someone off guard",
+      definition: "to surprise someone by doing something unexpected",
+      photo: "img/IMG_20250808_120046_262.jpg"
+    },
+    {
+      id: "headintheclouds",
+      idiom: "have one's head in the clouds",
+      definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality",
+      photo: "img/IMG_20250808_120043_423.jpg"
+    },
+    {
+      id: "bestfoot",
+      idiom: "put one's best foot forward",
+      definition: "to act in the best possible way to make a good impression",
+      photo: "img/IMG_20250804_144644_096.jpg"
+    },
+    {
+      id: "sorethumb",
+      idiom: "stick out like a sore thumb",
+      definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way",
+      photo: "img/zensina-v-plastikovyh-lozkah-i-vilkah.jpg"
+    },
+    {
+      id: "burstbubble",
+      idiom: "burst someone's bubble",
+      definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs",
+      photo: "img/portret-zensiny-s-asnym-puzyrem.jpg"
+    }
   ];
 
   let selectedItem = null;
