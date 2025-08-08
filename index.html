@@ -171,7 +171,6 @@
   .drop-box.selectable:hover {
     background: #d1f0e0;
   }
-  /* === Стили для идиом и определений (бежевый фон, чёрный текст, малиновое свечение) === */
   .idiom-item {
     padding: 8px 12px;
     margin: 6px 12px;
@@ -542,447 +541,447 @@
 </div>
 <script>
 (function() {
-if (window.self !== window.top) {
-    try {
-        const warningDiv = document.createElement('div');
-        warningDiv.className = 'iframe-warning';
-        warningDiv.textContent = '💡 For the best experience, please open this link in your browser.';
-        document.querySelector('.container').insertBefore(warningDiv, document.querySelector('.container').firstChild);
-        console.log("Iframe detected, warning shown.");
-    } catch (e) {
-        const warningDiv = document.createElement('div');
-        warningDiv.className = 'iframe-warning';
-        warningDiv.textContent = '💡 For the best experience, please open this link in your browser.';
-        document.querySelector('.container').insertBefore(warningDiv, document.querySelector('.container').firstChild);
-        console.log("Iframe detected (access denied), warning shown.");
-    }
-}
+  if (window.self !== window.top) {
+      try {
+          const warningDiv = document.createElement('div');
+          warningDiv.className = 'iframe-warning';
+          warningDiv.textContent = '💡 For the best experience, please open this link in your browser.';
+          document.querySelector('.container').insertBefore(warningDiv, document.querySelector('.container').firstChild);
+          console.log("Iframe detected, warning shown.");
+      } catch (e) {
+          const warningDiv = document.createElement('div');
+          warningDiv.className = 'iframe-warning';
+          warningDiv.textContent = '💡 For the best experience, please open this link in your browser.';
+          document.querySelector('.container').insertBefore(warningDiv, document.querySelector('.container').firstChild);
+          console.log("Iframe detected (access denied), warning shown.");
+      }
+  }
 
-const useClickModeOnly = true;
+  const useClickModeOnly = true;
 
-const idiomsData = [
-  { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "img/1754314642642.jpg" },
-  { id: "hitground", idiom: "hit the ground running", definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start", photo: "img/zensina-v-plastikovyh-lozkah-i-vilkah.jpg" },
-  { id: "stillwaters", idiom: "still waters run deep", definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface", photo: "img/zensina-derzit-kluc-ot-skeleta.jpg" },
-  { id: "holdkey", idiom: "hold the key", definition: "to have the power or means to achieve something", photo: "img/portret-zensiny-s-asnym-puzyrem.jpg" },
-  { id: "painttown", idiom: "paint the town red", definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties", photo: "img/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg" },
-  { id: "catchoffguard", idiom: "catch someone off guard", definition: "to surprise someone by doing something unexpected", photo: "img/Screenshot_20250804_001701_Chrome.jpg" },
-  { id: "headintheclouds", idiom: "have one's head in the clouds", definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality", photo: "img/Screenshot_20250804_001649_Chrome.jpg" },
-  { id: "bestfoot", idiom: "put one's best foot forward", definition: "to act in the best possible way to make a good impression", photo: "img/IMG_20250808_120046_262.jpg" },
-  { id: "sorethumb", idiom: "stick out like a sore thumb", definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way", photo: "img/IMG_20250808_120043_423.jpg" },
-  { id: "burstbubble", idiom: "burst someone's bubble", definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs", photo: "img/IMG_20250804_144644_096.jpg" }
-];
+  const idiomsData = [
+    { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "img/Screenshot_20250804_001701_Chrome.jpg" },
+    { id: "hitground", idiom: "hit the ground running", definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start", photo: "img/Screenshot_20250804_001649_Chrome.jpg" },
+    { id: "stillwaters", idiom: "still waters run deep", definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface", photo: "img/IMG_20250808_120048_354.jpg" },
+    { id: "holdkey", idiom: "hold the key", definition: "to have the power or means to achieve something", photo: "img/zensina-derzit-kluc-ot-skeleta.jpg" },
+    { id: "painttown", idiom: "paint the town red", definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties", photo: "img/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg" },
+    { id: "catchoffguard", idiom: "catch someone off guard", definition: "to surprise someone by doing something unexpected", photo: "img/IMG_20250808_120046_262.jpg" },
+    { id: "headintheclouds", idiom: "have one's head in the clouds", definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality", photo: "img/IMG_20250808_120043_423.jpg" },
+    { id: "bestfoot", idiom: "put one's best foot forward", definition: "to act in the best possible way to make a good impression", photo: "img/IMG_20250804_144644_096.jpg" },
+    { id: "sorethumb", idiom: "stick out like a sore thumb", definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way", photo: "img/zensina-v-plastikovyh-lozkah-i-vilkah.jpg" },
+    { id: "burstbubble", idiom: "burst someone's bubble", definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs", photo: "img/portret-zensiny-s-asnym-puzyrem.jpg" }
+  ];
 
-let selectedItem = null;
-let selectedDef = null;
+  let selectedItem = null;
+  let selectedDef = null;
 
-const photosList = document.getElementById('photosList');
-const idiomsList = document.getElementById('idiomsList');
-const check1Btn = document.getElementById('checkPart1Btn');
-const part1Result = document.getElementById('part1Result');
-const toPart2Btn = document.getElementById('toPart2Btn');
-const idiomsWithPhotosList = document.getElementById('idiomsWithPhotosList');
-const definitionsList = document.getElementById('definitionsList');
-const check2Btn = document.getElementById('checkPart2Btn');
-const part2Result = document.getElementById('part2Result');
-const toPart3Btn = document.getElementById('toPart3Btn');
-const restartBtn = document.getElementById('restartBtn');
+  const photosList = document.getElementById('photosList');
+  const idiomsList = document.getElementById('idiomsList');
+  const check1Btn = document.getElementById('checkPart1Btn');
+  const part1Result = document.getElementById('part1Result');
+  const toPart2Btn = document.getElementById('toPart2Btn');
+  const idiomsWithPhotosList = document.getElementById('idiomsWithPhotosList');
+  const definitionsList = document.getElementById('definitionsList');
+  const check2Btn = document.getElementById('checkPart2Btn');
+  const part2Result = document.getElementById('part2Result');
+  const toPart3Btn = document.getElementById('toPart3Btn');
+  const restartBtn = document.getElementById('restartBtn');
 
-let part2CheckAttempted = false;
+  let part2CheckAttempted = false;
 
-function shuffleArray(arr) {
-  return arr.map(v => ({v, s: Math.random()})).sort((a,b) => a.s - b.s).map(o => o.v);
-}
+  function shuffleArray(arr) {
+    return arr.map(v => ({v, s: Math.random()})).sort((a,b) => a.s - b.s).map(o => o.v);
+  }
 
-function canDrag(elem) {
-  return elem && !elem.classList.contains('unmovable');
-}
+  function canDrag(elem) {
+    return elem && !elem.classList.contains('unmovable');
+  }
 
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.classList.add('show');
-    }, 10);
-    setTimeout(() => {
-        notification.classList.remove('show');
-        setTimeout(() => {
-            if (notification.parentNode) {
-                notification.parentNode.removeChild(notification);
-            }
-        }, 400);
-    }, 4000);
-}
+  function showNotification(message, type = 'info') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      setTimeout(() => {
+          notification.classList.add('show');
+      }, 10);
+      setTimeout(() => {
+          notification.classList.remove('show');
+          setTimeout(() => {
+              if (notification.parentNode) {
+                  notification.parentNode.removeChild(notification);
+              }
+          }, 400);
+      }, 4000);
+  }
 
-function addSelectionIndicator(element) {
-    if (element && !element.querySelector('.selection-indicator')) {
-        const indicator = document.createElement('div');
-        indicator.className = 'selection-indicator';
-        indicator.textContent = '✓';
-        element.appendChild(indicator);
-    }
-}
+  function addSelectionIndicator(element) {
+      if (element && !element.querySelector('.selection-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'selection-indicator';
+          indicator.textContent = '✓';
+          element.appendChild(indicator);
+      }
+  }
 
-function removeSelectionIndicators() {
-    document.querySelectorAll('.selection-indicator').forEach(ind => {
-        if (ind.parentNode) {
-            ind.parentNode.removeChild(ind);
-        }
+  function removeSelectionIndicators() {
+      document.querySelectorAll('.selection-indicator').forEach(ind => {
+          if (ind.parentNode) {
+              ind.parentNode.removeChild(ind);
+          }
+      });
+  }
+
+  function createPhotoWithDropBox(item){
+    const li = document.createElement('li');
+    li.className = 'photo-item';
+    li.dataset.id = item.id;
+
+    const img = document.createElement('img');
+    img.src = item.photo;
+    img.alt = `Photo illustrating idiom: ${item.idiom}`;
+    li.appendChild(img);
+
+    const dropBox = document.createElement('div');
+    dropBox.className = 'drop-box';
+    dropBox.dataset.accepts = item.id;
+
+    dropBox.addEventListener('click', () => handleDropBoxClick(dropBox, 'idiom'));
+    dropBox.addEventListener('touchend', e => {
+        e.preventDefault();
+        handleDropBoxClick(dropBox, 'idiom');
     });
-}
 
-function createPhotoWithDropBox(item){
-  const li = document.createElement('li');
-  li.className = 'photo-item';
-  li.dataset.id = item.id;
+    li.appendChild(dropBox);
+    return li;
+  }
 
-  const img = document.createElement('img');
-  img.src = item.photo;
-  img.alt = `Photo illustrating idiom: ${item.idiom}`;
-  li.appendChild(img);
+  function createDraggableItem(text, id){
+    const li = document.createElement('li');
+    li.className = 'idiom-item neutral';
+    li.textContent = text;
+    li.dataset.id = id;
 
-  const dropBox = document.createElement('div');
-  dropBox.className = 'drop-box';
-  dropBox.dataset.accepts = item.id;
+    li.addEventListener('click', () => handleItemClick(li, 'idiom'));
+    li.addEventListener('touchend', e => {
+        e.preventDefault();
+        handleItemClick(li, 'idiom');
+    });
 
-  dropBox.addEventListener('click', () => handleDropBoxClick(dropBox, 'idiom'));
-  dropBox.addEventListener('touchend', e => {
-      e.preventDefault();
-      handleDropBoxClick(dropBox, 'idiom');
-  });
+    return li;
+  }
 
-  li.appendChild(dropBox);
-  return li;
-}
-
-function createDraggableItem(text, id){
-  const li = document.createElement('li');
-  li.className = 'idiom-item neutral';
-  li.textContent = text;
-  li.dataset.id = id;
-
-  li.addEventListener('click', () => handleItemClick(li, 'idiom'));
-  li.addEventListener('touchend', e => {
-      e.preventDefault();
-      handleItemClick(li, 'idiom');
-  });
-
-  return li;
-}
-
-function handleItemClick(item, type) {
-    if (!canDrag(item)) {
-        showNotification('This item is already correctly placed.', 'error');
-        return;
-    }
-
-    if (type === 'idiom' && selectedItem) selectedItem.classList.remove('selected');
-    if (type === 'definition' && selectedDef) selectedDef.classList.remove('selected');
-
-    removeSelectionIndicators();
-
-    if (type === 'idiom') {
-        selectedItem = item;
-        selectedItem.classList.add('selected');
-        addSelectionIndicator(selectedItem);
-        showNotification('Idiom selected. Now tap the target box.', 'info');
-    } else if (type === 'definition') {
-        selectedDef = item;
-        selectedDef.classList.add('selected');
-        addSelectionIndicator(selectedDef);
-        showNotification('Definition selected. Now tap the target box.', 'info');
-    }
-}
-
-function handleDropBoxClick(dropBox, type) {
-    let selectedItemVar = type === 'idiom' ? selectedItem : selectedDef;
-
-    if (!selectedItemVar) {
-        showNotification('Please select an item first by tapping it.', 'error');
-        return;
-    }
-
-    if (dropBox.classList.contains('unmovable')) {
-        showNotification('This box is already correctly filled.', 'error');
-        return;
-    }
-
-    if (dropBox.firstChild && !dropBox.firstChild.classList.contains('unmovable')) {
-        if (type === 'idiom') {
-            idiomsList.appendChild(dropBox.firstChild);
-        } else if (type === 'definition') {
-            definitionsList.appendChild(dropBox.firstChild);
-        }
-    }
-
-    dropBox.appendChild(selectedItemVar);
-    selectedItemVar.classList.remove('selected');
-    removeSelectionIndicators();
-
-    if (type === 'idiom') selectedItem = null;
-    else if (type === 'definition') selectedDef = null;
-
-    if (type === 'idiom') {
-        updateCheckPart1Button();
-        part1Result.textContent = '';
-    } else if (type === 'definition') {
-        updateCheckPart2Button();
-        part2Result.textContent = '';
-    }
-
-    showNotification('Item moved!', 'success');
-}
-
-function initPart1(){
-  photosList.innerHTML = '';
-  idiomsList.innerHTML = '';
-  selectedItem = null;
-  removeSelectionIndicators();
-
-  shuffleArray(idiomsData).forEach(item => photosList.appendChild(createPhotoWithDropBox(item)));
-  shuffleArray(idiomsData).forEach(item => idiomsList.appendChild(createDraggableItem(item.idiom, item.id)));
-
-  part1Result.textContent = '';
-  toPart2Btn.classList.add('hidden');
-  check1Btn.disabled = true;
-}
-
-function updateCheckPart1Button() {
-  const dropBoxes = photosList.querySelectorAll('.drop-box');
-  const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
-  check1Btn.disabled = !allFilled;
-}
-
-check1Btn.addEventListener('click', () => {
-  let correctCount = 0;
-  const dropBoxes = photosList.querySelectorAll('.drop-box');
-  dropBoxes.forEach(box => {
-    const boxChild = box.firstChild;
-    if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){
-      if(boxChild.dataset.id === box.dataset.accepts){
-        boxChild.classList.add('correct','unmovable');
-        boxChild.classList.remove('incorrect','neutral', 'retry-neutral');
-        box.classList.add('unmovable');
-        correctCount++;
-      } else {
-        boxChild.classList.remove('correct','unmovable');
-        if (part2CheckAttempted) {
-            boxChild.classList.add('retry-neutral');
-            boxChild.classList.remove('incorrect', 'neutral');
-        } else {
-            boxChild.classList.add('incorrect');
-            boxChild.classList.remove('retry-neutral', 'neutral');
-        }
-        box.classList.remove('unmovable');
-        idiomsList.appendChild(boxChild);
-        boxChild.classList.remove('incorrect', 'retry-neutral', 'correct', 'unmovable');
-        boxChild.classList.add('neutral');
+  function handleItemClick(item, type) {
+      if (!canDrag(item)) {
+          showNotification('This item is already correctly placed.', 'error');
+          return;
       }
-    }
-  });
-  updateCheckPart1Button();
 
-  if(correctCount === idiomsData.length){
-    part1Result.textContent = `🎉 Perfect! You matched all ${idiomsData.length} correctly!`;
-    part1Result.style.color = '#27ae60';
+      if (type === 'idiom' && selectedItem) selectedItem.classList.remove('selected');
+      if (type === 'definition' && selectedDef) selectedDef.classList.remove('selected');
+
+      removeSelectionIndicators();
+
+      if (type === 'idiom') {
+          selectedItem = item;
+          selectedItem.classList.add('selected');
+          addSelectionIndicator(selectedItem);
+          showNotification('Idiom selected. Now tap the target box.', 'info');
+      } else if (type === 'definition') {
+          selectedDef = item;
+          selectedDef.classList.add('selected');
+          addSelectionIndicator(selectedDef);
+          showNotification('Definition selected. Now tap the target box.', 'info');
+      }
+  }
+
+  function handleDropBoxClick(dropBox, type) {
+      let selectedItemVar = type === 'idiom' ? selectedItem : selectedDef;
+
+      if (!selectedItemVar) {
+          showNotification('Please select an item first by tapping it.', 'error');
+          return;
+      }
+
+      if (dropBox.classList.contains('unmovable')) {
+          showNotification('This box is already correctly filled.', 'error');
+          return;
+      }
+
+      if (dropBox.firstChild && !dropBox.firstChild.classList.contains('unmovable')) {
+          if (type === 'idiom') {
+              idiomsList.appendChild(dropBox.firstChild);
+          } else if (type === 'definition') {
+              definitionsList.appendChild(dropBox.firstChild);
+          }
+      }
+
+      dropBox.appendChild(selectedItemVar);
+      selectedItemVar.classList.remove('selected');
+      removeSelectionIndicators();
+
+      if (type === 'idiom') selectedItem = null;
+      else if (type === 'definition') selectedDef = null;
+
+      if (type === 'idiom') {
+          updateCheckPart1Button();
+          part1Result.textContent = '';
+      } else if (type === 'definition') {
+          updateCheckPart2Button();
+          part2Result.textContent = '';
+      }
+
+      showNotification('Item moved!', 'success');
+  }
+
+  function initPart1(){
+    photosList.innerHTML = '';
+    idiomsList.innerHTML = '';
+    selectedItem = null;
+    removeSelectionIndicators();
+
+    shuffleArray(idiomsData).forEach(item => photosList.appendChild(createPhotoWithDropBox(item)));
+    shuffleArray(idiomsData).forEach(item => idiomsList.appendChild(createDraggableItem(item.idiom, item.id)));
+
+    part1Result.textContent = '';
+    toPart2Btn.classList.add('hidden');
     check1Btn.disabled = true;
-    toPart2Btn.classList.remove('hidden');
-    showNotification('All answers are correct! Great job!', 'success');
-  } else {
-    part1Result.textContent = `🤔 You got ${correctCount}/${idiomsData.length} correct. Incorrect answers have been returned.`;
-    part1Result.style.color = '#e74c3c';
-    showNotification('Some answers were incorrect and returned. Try again!', 'error');
   }
-});
 
-toPart2Btn.addEventListener('click', () => {
-  document.getElementById('part1').classList.add('hidden');
-  toPart2Btn.classList.add('hidden');
-  document.getElementById('part2').classList.remove('hidden');
-  initPart2();
-});
+  function updateCheckPart1Button() {
+    const dropBoxes = photosList.querySelectorAll('.drop-box');
+    const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
+    check1Btn.disabled = !allFilled;
+  }
 
-function createIdiomWithPhoto(item){
-  const li = document.createElement('li');
-  li.className = 'photo-item';
-  li.dataset.id = item.id;
-
-  const img = document.createElement('img');
-  img.src = item.photo;
-  img.alt = `Photo for idiom: ${item.idiom}`;
-  li.appendChild(img);
-
-  const span = document.createElement('span');
-  span.textContent = item.idiom;
-  li.appendChild(span);
-
-  const dropContainer = document.createElement('div');
-  dropContainer.className = 'definition-drop-container';
-
-  const dropBox = document.createElement('div');
-  dropBox.className = 'drop-box';
-  dropBox.dataset.accepts = item.id;
-
-  dropBox.addEventListener('click', () => handleDropBoxClick(dropBox, 'definition'));
-  dropBox.addEventListener('touchend', e => {
-      e.preventDefault();
-      handleDropBoxClick(dropBox, 'definition');
-  });
-
-  dropContainer.appendChild(dropBox);
-  li.appendChild(dropContainer);
-  return li;
-}
-
-function createDefinition(item){
-  const li = document.createElement('li');
-  li.className = 'idiom-item neutral';
-  li.textContent = item.definition;
-  li.dataset.id = item.id;
-
-  li.addEventListener('click', () => handleItemClick(li, 'definition'));
-  li.addEventListener('touchend', e => {
-      e.preventDefault();
-      handleItemClick(li, 'definition');
-  });
-
-  return li;
-}
-
-function initPart2(){
-  idiomsWithPhotosList.innerHTML = '';
-  definitionsList.innerHTML = '';
-  selectedDef = null;
-  removeSelectionIndicators();
-
-  idiomsData.forEach(item => idiomsWithPhotosList.appendChild(createIdiomWithPhoto(item)));
-  shuffleArray(idiomsData).forEach(item => definitionsList.appendChild(createDefinition(item)));
-
-  check2Btn.disabled = true;
-  part2Result.textContent = '';
-}
-
-function updateCheckPart2Button(){
-  const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
-  const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
-  check2Btn.disabled = !allFilled;
-}
-
-check2Btn.addEventListener('click', () => {
-  part2CheckAttempted = true;
-  let correctCount = 0;
-  const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
-  dropBoxes.forEach(box => {
-    const boxChild = box.firstChild;
-    if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){
-      if(boxChild.dataset.id === box.dataset.accepts){
-        boxChild.classList.add('correct','unmovable');
-        boxChild.classList.remove('incorrect','neutral', 'retry-neutral');
-        box.classList.add('unmovable');
-        correctCount++;
-      } else {
-        boxChild.classList.remove('correct','unmovable');
-        if (part2CheckAttempted) {
-            boxChild.classList.add('retry-neutral');
-            boxChild.classList.remove('incorrect', 'neutral');
+  check1Btn.addEventListener('click', () => {
+    let correctCount = 0;
+    const dropBoxes = photosList.querySelectorAll('.drop-box');
+    dropBoxes.forEach(box => {
+      const boxChild = box.firstChild;
+      if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){
+        if(boxChild.dataset.id === box.dataset.accepts){
+          boxChild.classList.add('correct','unmovable');
+          boxChild.classList.remove('incorrect','neutral', 'retry-neutral');
+          box.classList.add('unmovable');
+          correctCount++;
         } else {
-            boxChild.classList.add('incorrect');
-            boxChild.classList.remove('retry-neutral', 'neutral');
+          boxChild.classList.remove('correct','unmovable');
+          if (part2CheckAttempted) {
+              boxChild.classList.add('retry-neutral');
+              boxChild.classList.remove('incorrect', 'neutral');
+          } else {
+              boxChild.classList.add('incorrect');
+              boxChild.classList.remove('retry-neutral', 'neutral');
+          }
+          box.classList.remove('unmovable');
+          idiomsList.appendChild(boxChild);
+          boxChild.classList.remove('incorrect', 'retry-neutral', 'correct', 'unmovable');
+          boxChild.classList.add('neutral');
         }
-        box.classList.remove('unmovable');
-        definitionsList.appendChild(boxChild);
-        boxChild.classList.remove('incorrect', 'retry-neutral', 'correct', 'unmovable');
-        boxChild.classList.add('neutral');
       }
+    });
+    updateCheckPart1Button();
+
+    if(correctCount === idiomsData.length){
+      part1Result.textContent = `🎉 Perfect! You matched all ${idiomsData.length} correctly!`;
+      part1Result.style.color = '#27ae60';
+      check1Btn.disabled = true;
+      toPart2Btn.classList.remove('hidden');
+      showNotification('All answers are correct! Great job!', 'success');
+    } else {
+      part1Result.textContent = `🤔 You got ${correctCount}/${idiomsData.length} correct. Incorrect answers have been returned.`;
+      part1Result.style.color = '#e74c3c';
+      showNotification('Some answers were incorrect and returned. Try again!', 'error');
     }
   });
-  updateCheckPart2Button();
 
-  if(correctCount === idiomsData.length){
-    part2Result.textContent = `🎉 Excellent! You matched all ${idiomsData.length} correctly!`;
-    part2Result.style.color = '#27ae60';
-    check2Btn.disabled = true;
-    toPart3Btn.classList.remove('hidden');
-    showNotification('All answers are correct! Well done!', 'success');
-  } else {
-    part2Result.textContent = `🤔 You got ${correctCount}/${idiomsData.length} correct. Incorrect answers have been returned.`;
-    part2Result.style.color = '#e74c3c';
-    showNotification('Some answers were incorrect and returned. Try again!', 'error');
+  toPart2Btn.addEventListener('click', () => {
+    document.getElementById('part1').classList.add('hidden');
+    toPart2Btn.classList.add('hidden');
+    document.getElementById('part2').classList.remove('hidden');
+    initPart2();
+  });
+
+  function createIdiomWithPhoto(item){
+    const li = document.createElement('li');
+    li.className = 'photo-item';
+    li.dataset.id = item.id;
+
+    const img = document.createElement('img');
+    img.src = item.photo;
+    img.alt = `Photo for idiom: ${item.idiom}`;
+    li.appendChild(img);
+
+    const span = document.createElement('span');
+    span.textContent = item.idiom;
+    li.appendChild(span);
+
+    const dropContainer = document.createElement('div');
+    dropContainer.className = 'definition-drop-container';
+
+    const dropBox = document.createElement('div');
+    dropBox.className = 'drop-box';
+    dropBox.dataset.accepts = item.id;
+
+    dropBox.addEventListener('click', () => handleDropBoxClick(dropBox, 'definition'));
+    dropBox.addEventListener('touchend', e => {
+        e.preventDefault();
+        handleDropBoxClick(dropBox, 'definition');
+    });
+
+    dropContainer.appendChild(dropBox);
+    li.appendChild(dropContainer);
+    return li;
   }
-});
 
-toPart3Btn.addEventListener('click', () => {
-  document.getElementById('part2').classList.add('hidden');
-  toPart3Btn.classList.add('hidden');
-  document.getElementById('part3').classList.remove('hidden');
-  initPart3();
-});
+  function createDefinition(item){
+    const li = document.createElement('li');
+    li.className = 'idiom-item neutral';
+    li.textContent = item.definition;
+    li.dataset.id = item.id;
 
-restartBtn.addEventListener('click', () => {
-  document.getElementById('part3').classList.add('hidden');
-  document.getElementById('part1').classList.remove('hidden');
-  part2CheckAttempted = false;
-  initPart1();
-});
+    li.addEventListener('click', () => handleItemClick(li, 'definition'));
+    li.addEventListener('touchend', e => {
+        e.preventDefault();
+        handleItemClick(li, 'definition');
+    });
 
-let currentCardIndex = 0;
+    return li;
+  }
 
-function updateCard() {
-  const item = idiomsData[currentCardIndex];
-  document.getElementById('card-idiom').textContent = item.idiom;
-  document.getElementById('card-definition').textContent = item.definition;
-  document.getElementById('card-counter').textContent = `Card ${currentCardIndex + 1} of ${idiomsData.length}`;
-  document.getElementById('flashcard-front').style.backgroundImage = `url('${item.photo}')`;
-  document.getElementById('flashcard').classList.remove('flipped');
-}
+  function initPart2(){
+    idiomsWithPhotosList.innerHTML = '';
+    definitionsList.innerHTML = '';
+    selectedDef = null;
+    removeSelectionIndicators();
 
-function initPart3() {
-  currentCardIndex = 0;
-  updateCard();
+    idiomsData.forEach(item => idiomsWithPhotosList.appendChild(createIdiomWithPhoto(item)));
+    shuffleArray(idiomsData).forEach(item => definitionsList.appendChild(createDefinition(item)));
 
-  const flashcard = document.getElementById('flashcard');
-  const newFlashcard = flashcard.cloneNode(true);
-  flashcard.parentNode.replaceChild(newFlashcard, flashcard);
-  newFlashcard.addEventListener('click', () => newFlashcard.classList.toggle('flipped'));
-  newFlashcard.addEventListener('touchend', e => {
-      e.preventDefault();
-      newFlashcard.classList.toggle('flipped');
+    check2Btn.disabled = true;
+    part2Result.textContent = '';
+  }
+
+  function updateCheckPart2Button(){
+    const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
+    const allFilled = Array.from(dropBoxes).every(box => box.children.length === 1);
+    check2Btn.disabled = !allFilled;
+  }
+
+  check2Btn.addEventListener('click', () => {
+    part2CheckAttempted = true;
+    let correctCount = 0;
+    const dropBoxes = idiomsWithPhotosList.querySelectorAll('.drop-box');
+    dropBoxes.forEach(box => {
+      const boxChild = box.firstChild;
+      if(boxChild && boxChild.nodeType === Node.ELEMENT_NODE){
+        if(boxChild.dataset.id === box.dataset.accepts){
+          boxChild.classList.add('correct','unmovable');
+          boxChild.classList.remove('incorrect','neutral', 'retry-neutral');
+          box.classList.add('unmovable');
+          correctCount++;
+        } else {
+          boxChild.classList.remove('correct','unmovable');
+          if (part2CheckAttempted) {
+              boxChild.classList.add('retry-neutral');
+              boxChild.classList.remove('incorrect', 'neutral');
+          } else {
+              boxChild.classList.add('incorrect');
+              boxChild.classList.remove('retry-neutral', 'neutral');
+          }
+          box.classList.remove('unmovable');
+          definitionsList.appendChild(boxChild);
+          boxChild.classList.remove('incorrect', 'retry-neutral', 'correct', 'unmovable');
+          boxChild.classList.add('neutral');
+        }
+      }
+    });
+    updateCheckPart2Button();
+
+    if(correctCount === idiomsData.length){
+      part2Result.textContent = `🎉 Excellent! You matched all ${idiomsData.length} correctly!`;
+      part2Result.style.color = '#27ae60';
+      check2Btn.disabled = true;
+      toPart3Btn.classList.remove('hidden');
+      showNotification('All answers are correct! Well done!', 'success');
+    } else {
+      part2Result.textContent = `🤔 You got ${correctCount}/${idiomsData.length} correct. Incorrect answers have been returned.`;
+      part2Result.style.color = '#e74c3c';
+      showNotification('Some answers were incorrect and returned. Try again!', 'error');
+    }
   });
 
-  const prevBtn = document.getElementById('prev-btn');
-  const nextBtn = document.getElementById('next-btn');
-  const newPrevBtn = prevBtn.cloneNode(true);
-  const newNextBtn = nextBtn.cloneNode(true);
-  prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
-  nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+  toPart3Btn.addEventListener('click', () => {
+    document.getElementById('part2').classList.add('hidden');
+    toPart3Btn.classList.add('hidden');
+    document.getElementById('part3').classList.remove('hidden');
+    initPart3();
+  });
 
-  newPrevBtn.addEventListener('click', () => {
-    currentCardIndex = (currentCardIndex - 1 + idiomsData.length) % idiomsData.length;
+  restartBtn.addEventListener('click', () => {
+    document.getElementById('part3').classList.add('hidden');
+    document.getElementById('part1').classList.remove('hidden');
+    part2CheckAttempted = false;
+    initPart1();
+  });
+
+  let currentCardIndex = 0;
+
+  function updateCard() {
+    const item = idiomsData[currentCardIndex];
+    document.getElementById('card-idiom').textContent = item.idiom;
+    document.getElementById('card-definition').textContent = item.definition;
+    document.getElementById('card-counter').textContent = `Card ${currentCardIndex + 1} of ${idiomsData.length}`;
+    document.getElementById('flashcard-front').style.backgroundImage = `url('${item.photo}')`;
+    document.getElementById('flashcard').classList.remove('flipped');
+  }
+
+  function initPart3() {
+    currentCardIndex = 0;
     updateCard();
-  });
-  newPrevBtn.addEventListener('touchend', e => {
-      e.preventDefault();
+
+    const flashcard = document.getElementById('flashcard');
+    const newFlashcard = flashcard.cloneNode(true);
+    flashcard.parentNode.replaceChild(newFlashcard, flashcard);
+    newFlashcard.addEventListener('click', () => newFlashcard.classList.toggle('flipped'));
+    newFlashcard.addEventListener('touchend', e => {
+        e.preventDefault();
+        newFlashcard.classList.toggle('flipped');
+    });
+
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const newPrevBtn = prevBtn.cloneNode(true);
+    const newNextBtn = nextBtn.cloneNode(true);
+    prevBtn.parentNode.replaceChild(newPrevBtn, prevBtn);
+    nextBtn.parentNode.replaceChild(newNextBtn, nextBtn);
+
+    newPrevBtn.addEventListener('click', () => {
       currentCardIndex = (currentCardIndex - 1 + idiomsData.length) % idiomsData.length;
       updateCard();
-  });
+    });
+    newPrevBtn.addEventListener('touchend', e => {
+        e.preventDefault();
+        currentCardIndex = (currentCardIndex - 1 + idiomsData.length) % idiomsData.length;
+        updateCard();
+    });
 
-  newNextBtn.addEventListener('click', () => {
-    currentCardIndex = (currentCardIndex + 1) % idiomsData.length;
-    updateCard();
-  });
-  newNextBtn.addEventListener('touchend', e => {
-      e.preventDefault();
+    newNextBtn.addEventListener('click', () => {
       currentCardIndex = (currentCardIndex + 1) % idiomsData.length;
       updateCard();
-  });
-}
+    });
+    newNextBtn.addEventListener('touchend', e => {
+        e.preventDefault();
+        currentCardIndex = (currentCardIndex + 1) % idiomsData.length;
+        updateCard();
+    });
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('App initialized. Drag & Drop is disabled. Using Click/Touch mode only.');
-    initPart1();
-});
+  document.addEventListener('DOMContentLoaded', () => {
+      console.log('App initialized. Drag & Drop is disabled. Using Click/Touch mode only.');
+      initPart1();
+  });
 })();
 </script>
 </body>
