@@ -177,14 +177,11 @@
     margin: 6px 12px;
     border: 1px solid #bdc3c7;
     border-radius: 5px;
-    /* === Новые стили === */
-    background: #f5f5dc; /* Beige */
-    color: #000000; /* Black */
+    background: #f5f5dc;
+    color: #000000;
     font-weight: 500;
-    /* Малиновое свечение */
     box-shadow: 0 0 8px rgba(255, 105, 180, 0.8), 0 1px 3px rgba(0,0,0,0.1);
     text-shadow: 0 0 2px rgba(255, 105, 180, 0.9);
-    /* === Конец новых стилей === */
     cursor: pointer;
     user-select: none;
     white-space: normal;
@@ -195,7 +192,7 @@
     hyphens: auto;
     text-align: left;
     scrollbar-width: thin;
-    scrollbar-color: #ff69b4 #f5f5dc; /* Малиновый скролл на бежевом фоне */
+    scrollbar-color: #ff69b4 #f5f5dc;
     position: relative;
   }
   .idiom-item::-webkit-scrollbar {
@@ -206,23 +203,21 @@
     border-radius: 3px;
   }
   .idiom-item::-webkit-scrollbar-thumb {
-    background-color: #ff69b4; /* Малиновый */
+    background-color: #ff69b4;
     border-radius: 3px;
   }
   .idiom-item::-webkit-scrollbar-thumb:hover {
-    background-color: #ff1493; /* Более насыщенный малиновый */
+    background-color: #ff1493;
   }
-  /* Стиль при выборе */
   .idiom-item.selected {
-    background-color: #f9e79f; /* Жёлтый при выборе */
+    background-color: #f9e79f;
     border-color: #f1c40f;
     box-shadow: 0 0 0 2px #f1c40f, 0 2px 5px rgba(0,0,0,0.15);
     transform: scale(1.02);
     z-index: 10;
-    color: #333; /* Текст становится тёмно-жёлтым/серым для контраста */
-    text-shadow: none; /* Убираем свечение при выборе */
+    color: #333;
+    text-shadow: none;
   }
-  /* Стили состояний */
   .idiom-item.correct,
   .idiom-item.unmovable {
     background-color: #abebc6;
@@ -230,20 +225,19 @@
     font-weight: bold;
     cursor: default !important;
     box-shadow: inset 0 0 5px rgba(39, 174, 96, 0.2);
-    color: #1b5e20; /* Тёмно-зелёный текст */
+    color: #1b5e20;
     text-shadow: none;
   }
   .idiom-item.incorrect {
     background-color: #fadbd8;
     border-color: #e74c3c;
     box-shadow: inset 0 0 5px rgba(231, 76, 60, 0.2);
-    color: #b71c1c; /* Тёмно-красный текст */
+    color: #b71c1c;
     text-shadow: none;
   }
   .idiom-item.neutral {
-    /* Возвращаем базовые стили, если они были сброшены */
-    background: #f5f5dc; /* Beige */
-    color: #000000; /* Black */
+    background: #f5f5dc;
+    color: #000000;
     box-shadow: 0 0 8px rgba(255, 105, 180, 0.8), 0 1px 3px rgba(0,0,0,0.1);
     text-shadow: 0 0 2px rgba(255, 105, 180, 0.9);
   }
@@ -254,7 +248,6 @@
     color: #0d47a1;
     text-shadow: none;
   }
-  /* === Конец стилей для идиом и определений === */
   button {
     margin-top: 20px;
     padding: 12px 25px;
@@ -549,8 +542,6 @@
 </div>
 <script>
 (function() {
-// === Исправленная проверка iframe ===
-// Вместо window.top.location = window.self.location; показываем предупреждение
 if (window.self !== window.top) {
     try {
         const warningDiv = document.createElement('div');
@@ -567,26 +558,23 @@ if (window.self !== window.top) {
     }
 }
 
-// === Отключаем Drag & Drop полностью ===
-// Теперь используем ТОЛЬКО Click/Touch режим
-const useClickModeOnly = true; // Флаг для ясности
+const useClickModeOnly = true;
 
-// === Данные и переменные ===
 const idiomsData = [
-  { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "img/Screenshot_20250804_001701_Chrome.jpg" },
-  { id: "hitground", idiom: "hit the ground running", definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start", photo: "img/Screenshot_20250804_001649_Chrome.jpg" },
-  { id: "stillwaters", idiom: "still waters run deep", definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface", photo: "img/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg" },
-  { id: "holdkey", idiom: "hold the key", definition: "to have the power or means to achieve something", photo: "img/zensina-derzit-kluc-ot-skeleta.jpg" },
-  { id: "painttown", idiom: "paint the town red", definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties", photo: "img/portret-zensiny-s-asnym-puzyrem.jpg" },
-  { id: "catchoffguard", idiom: "catch someone off guard", definition: "to surprise someone by doing something unexpected", photo: "img/IMG_20250808_120046_262.jpg" },
-  { id: "headintheclouds", idiom: "have one's head in the clouds", definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality", photo: "img/IMG_20250808_120043_423.jpg" },
-  { id: "bestfoot", idiom: "put one's best foot forward", definition: "to act in the best possible way to make a good impression", photo: "img/IMG_20250804_144644_096.jpg" },
-  { id: "sorethumb", idiom: "stick out like a sore thumb", definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way", photo: "img/zensina-v-plastikovyh-lozkah-i-vilkah.jpg" },
-  { id: "burstbubble", idiom: "burst someone's bubble", definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs", photo: "img/IMG_20250808_120048_354.jpg" }
+  { id: "blessing", idiom: "a blessing in disguise", definition: "something that seems bad at first but turns out to be good", photo: "img/1754314642642.jpg" },
+  { id: "hitground", idiom: "hit the ground running", definition: "to begin a new activity with great energy and enthusiasm, being immediately effective and successful from the start", photo: "img/zensina-v-plastikovyh-lozkah-i-vilkah.jpg" },
+  { id: "stillwaters", idiom: "still waters run deep", definition: "people who seem quiet or calm often have complex thoughts and emotions beneath the surface", photo: "img/zensina-derzit-kluc-ot-skeleta.jpg" },
+  { id: "holdkey", idiom: "hold the key", definition: "to have the power or means to achieve something", photo: "img/portret-zensiny-s-asnym-puzyrem.jpg" },
+  { id: "painttown", idiom: "paint the town red", definition: "to go out and celebrate in a lively, noisy, and often extravagant way, typically by visiting many bars, clubs, or parties", photo: "img/celovek-naslazdausiisa-kollazem-psihodeliceskogo-putesestvia.jpg" },
+  { id: "catchoffguard", idiom: "catch someone off guard", definition: "to surprise someone by doing something unexpected", photo: "img/Screenshot_20250804_001701_Chrome.jpg" },
+  { id: "headintheclouds", idiom: "have one's head in the clouds", definition: "to be daydreaming or not paying attention to what is happening around; to be impractical or disconnected from reality", photo: "img/Screenshot_20250804_001649_Chrome.jpg" },
+  { id: "bestfoot", idiom: "put one's best foot forward", definition: "to act in the best possible way to make a good impression", photo: "img/IMG_20250808_120046_262.jpg" },
+  { id: "sorethumb", idiom: "stick out like a sore thumb", definition: "to be very noticeable or clearly different from the surrounding people or things, often in an awkward or unpleasant way", photo: "img/IMG_20250808_120043_423.jpg" },
+  { id: "burstbubble", idiom: "burst someone's bubble", definition: "to do or say something that destroys someone's happy or optimistic feelings or beliefs", photo: "img/IMG_20250804_144644_096.jpg" }
 ];
 
-let selectedItem = null; // Для идиом в Part 1
-let selectedDef = null;  // Для определений в Part 2
+let selectedItem = null;
+let selectedDef = null;
 
 const photosList = document.getElementById('photosList');
 const idiomsList = document.getElementById('idiomsList');
@@ -600,9 +588,8 @@ const part2Result = document.getElementById('part2Result');
 const toPart3Btn = document.getElementById('toPart3Btn');
 const restartBtn = document.getElementById('restartBtn');
 
-let part2CheckAttempted = false; // Используется для Part 1 тоже
+let part2CheckAttempted = false;
 
-// === Утилиты ===
 function shuffleArray(arr) {
   return arr.map(v => ({v, s: Math.random()})).sort((a,b) => a.s - b.s).map(o => o.v);
 }
@@ -611,7 +598,6 @@ function canDrag(elem) {
   return elem && !elem.classList.contains('unmovable');
 }
 
-// === Уведомления ===
 function showNotification(message, type = 'info') {
     const notification = document.createElement('div');
     notification.className = `notification ${type}`;
@@ -630,7 +616,6 @@ function showNotification(message, type = 'info') {
     }, 4000);
 }
 
-// === Индикаторы выбора ===
 function addSelectionIndicator(element) {
     if (element && !element.querySelector('.selection-indicator')) {
         const indicator = document.createElement('div');
@@ -648,7 +633,6 @@ function removeSelectionIndicators() {
     });
 }
 
-// === Part 1 ===
 function createPhotoWithDropBox(item){
   const li = document.createElement('li');
   li.className = 'photo-item';
@@ -820,7 +804,6 @@ toPart2Btn.addEventListener('click', () => {
   initPart2();
 });
 
-// === Part 2 ===
 function createIdiomWithPhoto(item){
   const li = document.createElement('li');
   li.className = 'photo-item';
@@ -944,7 +927,6 @@ restartBtn.addEventListener('click', () => {
   initPart1();
 });
 
-// === Part 3: Flashcards ===
 let currentCardIndex = 0;
 
 function updateCard() {
@@ -997,7 +979,6 @@ function initPart3() {
   });
 }
 
-// === Инициализация ===
 document.addEventListener('DOMContentLoaded', () => {
     console.log('App initialized. Drag & Drop is disabled. Using Click/Touch mode only.');
     initPart1();
